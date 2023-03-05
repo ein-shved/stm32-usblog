@@ -23,6 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include <unistd.h>
 
 /* USER CODE END Includes */
 
@@ -170,6 +172,17 @@ static void ResetUsb(void)
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
     HAL_Delay(500);
 }
+
+int _write(int file, char *ptr, int len)
+{
+    if (file != STDOUT_FILENO && file != STDERR_FILENO)
+    {
+        return 0;
+    }
+    CDC_Transmit_FS((uint8_t*) ptr, len);
+    return len;
+}
+
 /* USER CODE END 4 */
 
 /**
