@@ -178,6 +178,12 @@ static int8_t CDC_DeInit_FS(void)
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 {
   /* USER CODE BEGIN 5 */
+  static USBD_CDC_LineCodingTypeDef LineCoding = {
+    .bitrate    = 115200,
+    .format     = 0x00,
+    .paritytype = 0x00,
+    .datatype   = 0x08,
+  };
   switch(cmd)
   {
     case CDC_SEND_ENCAPSULATED_COMMAND:
@@ -217,11 +223,26 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
   /*                                        4 - Space                            */
   /* 6      | bDataBits  |   1   | Number Data bits (5, 6, 7, 8 or 16).          */
   /*******************************************************************************/
-    case CDC_SET_LINE_CODING:
+    case CDC_GET_LINE_CODING:
+        pbuf[0] = (uint8_t)(0xff & (LineCoding.bitrate >> 0));
+        pbuf[1] = (uint8_t)(0xff & (LineCoding.bitrate >> 8));
+        pbuf[2] = (uint8_t)(0xff & (LineCoding.bitrate >> 16));
+        pbuf[3] = (uint8_t)(0xff & (LineCoding.bitrate >> 24));
+        pbuf[4] = LineCoding.format;
+        pbuf[5] = LineCoding.paritytype;
+        pbuf[6] = LineCoding.datatype;
 
     break;
 
-    case CDC_GET_LINE_CODING:
+    case CDC_SET_LINE_CODING:
+        LineCoding.bitrate    = (uint32_t)(
+                                    (pbuf[0] << 0)  |
+                                    (pbuf[1] << 8)  |
+                                    (pbuf[2] << 16) |
+                                    (pbuf[3] << 24));
+        LineCoding.format     = pbuf[4];
+        LineCoding.paritytype = pbuf[5];
+        LineCoding.datatype   = pbuf[6];
 
     break;
 

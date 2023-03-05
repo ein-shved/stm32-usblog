@@ -50,6 +50,8 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
+static void ResetUsb(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -85,6 +87,13 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+
+  /* Without this the host will not detect the hardware resetting of device.
+   * This call mast reside after GPIO Init and before USB Init. Be careful it is
+   * outside the USER CODE block so will be removed after MX Code regeneration.
+   */
+  ResetUsb();
+
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
@@ -149,6 +158,18 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+static void ResetUsb(void)
+{
+    GPIO_InitTypeDef init = {
+        .Pull = GPIO_NOPULL,
+        .Speed = GPIO_SPEED_FREQ_MEDIUM,
+        .Mode = GPIO_MODE_OUTPUT_PP,
+        .Pin = GPIO_PIN_12,
+    };
+    HAL_GPIO_Init(GPIOA, &init);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
+    HAL_Delay(500);
+}
 /* USER CODE END 4 */
 
 /**
