@@ -28,11 +28,11 @@
         "stm32CubeF4": "stm32CubeF4"
       },
       "locked": {
-        "lastModified": 1678027379,
-        "narHash": "sha256-c2BXh4+dKR6L0iA/pNvhN96pfIbcEbvWGsrj/EA6LFI=",
+        "lastModified": 1678284728,
+        "narHash": "sha256-t64B9UMb/LcOj5oL+IXijCkV1pTlD5D9UYUjqGoZqAo=",
         "owner": "ein-shved",
         "repo": "nix-stm32",
-        "rev": "eea2f2d2397276e8b4a0c82fec053c70993dac1f",
+        "rev": "510e87b3a5924f8083e604978220b62c78f172e2",
         "type": "github"
       },
       "original": {
