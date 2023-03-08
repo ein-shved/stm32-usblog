@@ -103,11 +103,16 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  unsigned cnt = 0;
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+    printf("Hello world #%u\n", ++cnt);
+    HAL_Delay(500);
+
   }
   /* USER CODE END 3 */
 }
